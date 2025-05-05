@@ -2,6 +2,7 @@
 import { TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const isMobile = useIsMobile();
@@ -24,8 +25,15 @@ const Header = () => {
               Analisando ações do IDIV com método de Graham
             </span>
           )}
-          <Button variant="secondary" size="sm" className="rounded-full font-medium bg-white hover:bg-white/90 text-primary">
-            {isMobile ? "Info" : "Sobre o método"}
+          <Button 
+            variant="secondary" 
+            size="sm" 
+            className="rounded-full font-medium bg-white hover:bg-white/90 text-primary"
+            asChild
+          >
+            <Link to="/">
+              {isMobile ? "Login" : "Login / Cadastro"}
+            </Link>
           </Button>
         </div>
       </div>
