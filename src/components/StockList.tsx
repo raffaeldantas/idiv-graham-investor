@@ -21,6 +21,7 @@ const StockList = ({ stocks }: StockListProps) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: index * 0.05 }}
+          className="h-full"
         >
           <StockCard stock={stock} />
         </motion.div>

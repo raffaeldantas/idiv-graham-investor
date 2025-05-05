@@ -41,17 +41,17 @@ const StockTable = ({ stocks }: StockTableProps) => {
     if (sortField !== field) return null;
     
     return sortDirection === 'asc' ? (
-      <ArrowUp className="h-3 w-3 ml-1 inline" />
+      <ArrowUp className="h-3 w-3 ml-1 inline text-primary" />
     ) : (
-      <ArrowDown className="h-3 w-3 ml-1 inline" />
+      <ArrowDown className="h-3 w-3 ml-1 inline text-primary" />
     );
   };
 
   return (
-    <div className="relative overflow-x-auto border rounded-lg">
-      <Table>
-        <TableHeader>
-          <TableRow>
+    <div className="relative overflow-x-auto rounded-lg border border-white/10 shadow-md">
+      <Table className="finance-table">
+        <TableHeader className="bg-secondary/80">
+          <TableRow className="border-b border-white/10 hover:bg-primary/5">
             <TableHead 
               className="cursor-pointer"
               onClick={() => handleSort('papel')}
@@ -102,10 +102,13 @@ const StockTable = ({ stocks }: StockTableProps) => {
         </TableHeader>
         <TableBody>
           {sortedStocks.map((stock) => (
-            <TableRow key={stock.papel}>
-              <TableCell className="font-medium">{stock.papel}</TableCell>
+            <TableRow 
+              key={stock.papel} 
+              className="border-b border-white/5 hover:bg-primary/5"
+            >
+              <TableCell className="font-mono font-medium text-primary">{stock.papel}</TableCell>
               <TableCell>{stock.empresa}</TableCell>
-              <TableCell>{stock.setor}</TableCell>
+              <TableCell className="opacity-80 italic">{stock.setor}</TableCell>
               <TableCell className="text-right">{formatCurrency(stock.cotacao)}</TableCell>
               <TableCell className="text-right">{stock.lpa.toFixed(2)}</TableCell>
               <TableCell className="text-right">{stock.vpa.toFixed(2)}</TableCell>

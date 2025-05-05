@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import StockTable from "./StockTable";
 import StockList from "./StockList";
-import { Info } from "lucide-react";
+import { Info, TrendingUp, LineChart } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const Dashboard = () => {
@@ -22,24 +22,29 @@ const Dashboard = () => {
   return (
     <div className="container mx-auto py-6 px-4">
       <div className="mb-8">
-        <h2 className="text-3xl font-bold mb-2">Análise Graham - Ações IDIV</h2>
+        <h2 className="text-3xl font-bold mb-2 flex items-center gap-2">
+          <LineChart className="w-6 h-6 text-primary" />
+          Análise Graham - Ações IDIV
+        </h2>
         <p className="text-muted-foreground">
-          Encontre ações potencialmente subavaliadas usando a fórmula do Benjamin Graham
+          Descubra ações potencialmente subavaliadas usando a metodologia de Benjamin Graham
         </p>
       </div>
 
-      <Card className="mb-6">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Info size={18} /> 
+      <Card className="mb-6 finance-card">
+        <CardHeader className="border-b border-white/5">
+          <CardTitle className="flex items-center gap-2 text-primary">
+            <TrendingUp size={18} /> 
             Fórmula de Graham
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="opacity-80">
             A fórmula simplificada calcula o valor intrínseco das ações usando: 
-            Valor Intrínseco = √(22,5 × LPA × VPA)
+            <code className="ml-2 bg-primary/20 px-2 py-0.5 rounded text-sm">
+              Valor Intrínseco = √(22,5 × LPA × VPA)
+            </code>
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pt-4">
           <p className="text-sm">
             Esta análise compara o valor de mercado atual com o valor intrínseco calculado.
             Um desconto positivo indica que a ação pode estar subavaliada segundo os critérios de Graham.
@@ -54,9 +59,13 @@ const Dashboard = () => {
         onValueChange={(v) => setView(v as "table" | "cards")}
         className="mb-6"
       >
-        <TabsList>
-          <TabsTrigger value="table">Visualização em Tabela</TabsTrigger>
-          <TabsTrigger value="cards">Visualização em Cards</TabsTrigger>
+        <TabsList className="bg-secondary/60 border border-white/10">
+          <TabsTrigger value="table" className="data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+            Visualização em Tabela
+          </TabsTrigger>
+          <TabsTrigger value="cards" className="data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+            Visualização em Cards
+          </TabsTrigger>
         </TabsList>
         
         <TabsContent value="table" className="mt-6">
