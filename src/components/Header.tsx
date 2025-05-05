@@ -2,7 +2,7 @@
 import { TrendingUp, DollarSign, LogOut, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/App";
 
 const Header = () => {
@@ -10,8 +10,9 @@ const Header = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
   
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logout();
+    navigate('/');
   };
   
   return (

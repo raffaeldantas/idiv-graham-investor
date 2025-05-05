@@ -8,6 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowRight } from "lucide-react";
 import { useAuth } from "@/App";
+import { supabase } from "@/integrations/supabase/client";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -33,27 +34,60 @@ const LoginForm = () => {
     
     setIsLoading(true);
     
-    // Simulate login (in a real app, you'd connect to your backend)
     try {
-      // Mock successful login
-      await new Promise(resolve => setTimeout(resolve, 800));
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      
+      if (error) throw error;
       
       toast({
         title: "Login efetuado",
         description: "Você foi autenticado com sucesso",
       });
       
-      // Set authenticated state to true
-      login();
+      // Login é gerenciado pelo listener de auth do Supabase em App.tsx
       navigate("/dashboard");
-    } catch (error) {
+    } catch (error: any) {
+      console.error("Erro de login:", error);
       toast({
         title: "Erro no login",
-        description: "Email ou senha incorretos",
+        description: error.message || "Email ou senha incorretos",
         variant: "destructive",
       });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleResetPassword = async () => {
+    if (!email) {
+      toast({
+        title: "Email necessário",
+        description: "Por favor, informe seu email para resetar a senha",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin,
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Email enviado",
+        description: "Siga as instruções no email para resetar sua senha",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Erro",
+        description: error.message || "Não foi possível enviar o email de reset",
+        variant: "destructive",
+      });
     }
   };
 
@@ -74,12 +108,13 @@ const LoginForm = () => {
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <Label htmlFor="password">Senha</Label>
-          <a 
-            href="#" 
+          <button 
+            type="button"
+            onClick={handleResetPassword}
             className="text-xs text-primary hover:underline"
           >
             Esqueceu a senha?
-          </a>
+          </button>
         </div>
         <Input
           id="password"

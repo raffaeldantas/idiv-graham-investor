@@ -8,6 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowRight } from "lucide-react";
 import { useAuth } from "@/App";
+import { supabase } from "@/integrations/supabase/client";
 
 const SignupForm = () => {
   const [name, setName] = useState("");
@@ -41,27 +42,43 @@ const SignupForm = () => {
       return;
     }
     
+    if (password.length < 8) {
+      toast({
+        title: "Senha muito curta",
+        description: "A senha deve ter pelo menos 8 caracteres",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     setIsLoading(true);
     
-    // Simulate signup (in a real app, you'd connect to your backend)
     try {
-      // Mock successful signup
-      await new Promise(resolve => setTimeout(resolve, 800));
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            name,
+          }
+        }
+      });
+      
+      if (error) throw error;
       
       toast({
         title: "Cadastro efetuado",
         description: "Sua conta foi criada com sucesso",
       });
       
-      // Set authenticated state to true
-      login();
-      
-      // Redirect to plans page instead of dashboard
+      // Redirecionamento para a página de planos
+      // Login é gerenciado pelo listener de auth do Supabase em App.tsx
       navigate("/plans");
-    } catch (error) {
+    } catch (error: any) {
+      console.error("Erro no cadastro:", error);
       toast({
         title: "Erro no cadastro",
-        description: "Não foi possível criar sua conta",
+        description: error.message || "Não foi possível criar sua conta",
         variant: "destructive",
       });
     } finally {

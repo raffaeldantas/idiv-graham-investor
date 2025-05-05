@@ -27,23 +27,24 @@ const Plans = () => {
     
     try {
       // Aqui será implementada a integração com o Mercado Pago após a conexão com Supabase
+      
+      // Simulando um atraso para mostrar o estado de carregamento
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Atualiza o status da assinatura no Supabase
+      await setSubscription(true);
+      
       toast({
         title: "Assinatura realizada",
         description: `Sua assinatura ${plan === 'monthly' ? 'mensal' : 'anual'} foi ativada com sucesso.`,
       });
       
-      // Simulando um atraso para mostrar o estado de carregamento
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Atualiza o estado global informando que o usuário tem uma assinatura ativa
-      setSubscription(true);
-      
       // Redireciona para o dashboard após a assinatura
       navigate("/dashboard");
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: "Erro",
-        description: "Ocorreu um erro ao processar sua assinatura.",
+        description: error.message || "Ocorreu um erro ao processar sua assinatura.",
         variant: "destructive",
       });
       console.error("Erro na assinatura:", error);
