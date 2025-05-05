@@ -11,12 +11,13 @@ import { useAuth } from "@/App";
 const Landing = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<"login" | "signup">("login");
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, hasSubscription } = useAuth();
 
-  // If already authenticated, redirect to dashboard
+  // If already authenticated, redirect to appropriate page
   if (isAuthenticated) {
-    navigate("/dashboard");
-    return null; // Added return statement to prevent rendering the rest when redirecting
+    // Se tiver assinatura, vai para dashboard, senão vai para planos
+    navigate(hasSubscription ? "/dashboard" : "/plans");
+    return null;
   }
 
   return (

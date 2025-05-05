@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -12,8 +13,10 @@ import { useState, createContext, useContext } from "react";
 // Create authentication context
 type AuthContextType = {
   isAuthenticated: boolean;
+  hasSubscription: boolean;  // Adicionado para controlar o status da assinatura
   login: () => void;
   logout: () => void;
+  setSubscription: (value: boolean) => void; // Adicionado para atualizar o status da assinatura
 };
 
 export const AuthContext = createContext<AuthContextType | null>(null);
@@ -26,8 +29,24 @@ export const useAuth = () => {
   return context;
 };
 
-// Protected route component
+// Protected route component - agora verifica se o usuário tem assinatura
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const { isAuthenticated, hasSubscription } = useAuth();
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/" replace />;
+  }
+  
+  // Se autenticado mas sem assinatura, redireciona para a página de planos
+  if (!hasSubscription) {
+    return <Navigate to="/plans" replace />;
+  }
+  
+  return <>{children}</>;
+};
+
+// Rota que requer apenas autenticação, sem verificar assinatura
+const AuthenticatedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated } = useAuth();
   
   if (!isAuthenticated) {
@@ -42,13 +61,18 @@ const queryClient = new QueryClient();
 const App = () => {
   // Simple authentication state (would be replaced by real auth in production)
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [hasSubscription, setHasSubscription] = useState<boolean>(false);
   
   const login = () => setIsAuthenticated(true);
-  const logout = () => setIsAuthenticated(false);
+  const logout = () => {
+    setIsAuthenticated(false);
+    setHasSubscription(false);
+  };
+  const setSubscription = (value: boolean) => setHasSubscription(value);
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+      <AuthContext.Provider value={{ isAuthenticated, hasSubscription, login, logout, setSubscription }}>
         <TooltipProvider>
           <Toaster />
           <Sonner />
@@ -66,9 +90,9 @@ const App = () => {
               <Route 
                 path="/plans" 
                 element={
-                  <ProtectedRoute>
+                  <AuthenticatedRoute>
                     <Plans />
-                  </ProtectedRoute>
+                  </AuthenticatedRoute>
                 } 
               />
               <Route path="*" element={<NotFound />} />

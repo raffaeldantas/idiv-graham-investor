@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,7 +14,7 @@ const Plans = () => {
   });
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, setSubscription } = useAuth();
   
   // Redirecionar para landing page se não estiver autenticado
   if (!isAuthenticated) {
@@ -29,12 +28,18 @@ const Plans = () => {
     try {
       // Aqui será implementada a integração com o Mercado Pago após a conexão com Supabase
       toast({
-        title: "Em breve",
-        description: "A integração com o Mercado Pago será implementada em breve.",
+        title: "Assinatura realizada",
+        description: `Sua assinatura ${plan === 'monthly' ? 'mensal' : 'anual'} foi ativada com sucesso.`,
       });
       
       // Simulando um atraso para mostrar o estado de carregamento
       await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Atualiza o estado global informando que o usuário tem uma assinatura ativa
+      setSubscription(true);
+      
+      // Redireciona para o dashboard após a assinatura
+      navigate("/dashboard");
     } catch (error) {
       toast({
         title: "Erro",
