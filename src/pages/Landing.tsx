@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, TrendingUp, Check } from "lucide-react";
@@ -19,6 +18,16 @@ const Landing = () => {
     navigate(hasSubscription ? "/dashboard" : "/plans");
     return null;
   }
+  
+  const handleStartNowClick = () => {
+    // If user is already authenticated, navigate directly to plans
+    if (isAuthenticated) {
+      navigate("/plans");
+    } else {
+      // Otherwise, switch to signup tab so they can create an account first
+      setActiveTab("signup");
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-background to-background/95">
@@ -70,7 +79,7 @@ const Landing = () => {
 
             <div className="pt-4">
               <Button 
-                onClick={() => setActiveTab("signup")}
+                onClick={handleStartNowClick}
                 className="rounded-full px-6 group"
                 size="lg"
               >
