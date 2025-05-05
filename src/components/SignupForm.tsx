@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowRight } from "lucide-react";
+import { useAuth } from "@/App";
 
 const SignupForm = () => {
   const [name, setName] = useState("");
@@ -16,6 +17,7 @@ const SignupForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,6 +53,8 @@ const SignupForm = () => {
         description: "Sua conta foi criada com sucesso",
       });
       
+      // Set authenticated state to true
+      login();
       navigate("/dashboard");
     } catch (error) {
       toast({

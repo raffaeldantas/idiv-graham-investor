@@ -6,10 +6,17 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import LoginForm from "@/components/LoginForm";
 import SignupForm from "@/components/SignupForm";
+import { useAuth } from "@/App";
 
 const Landing = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<"login" | "signup">("login");
+  const { isAuthenticated } = useAuth();
+
+  // If already authenticated, redirect to dashboard
+  if (isAuthenticated) {
+    navigate("/dashboard");
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-background to-background/95">
@@ -22,13 +29,6 @@ const Landing = () => {
             </div>
             <h1 className="font-bold text-2xl">IDIV Graham Investor</h1>
           </div>
-          <Button 
-            variant="ghost" 
-            onClick={() => navigate("/dashboard")}
-            className="font-medium"
-          >
-            Dashboard
-          </Button>
         </div>
       </header>
 
@@ -68,11 +68,11 @@ const Landing = () => {
 
             <div className="pt-4">
               <Button 
-                onClick={() => navigate("/dashboard")}
+                onClick={() => setActiveTab("signup")}
                 className="rounded-full px-6 group"
                 size="lg"
               >
-                Ver análise completa
+                Criar conta gratuita
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </div>

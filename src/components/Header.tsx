@@ -1,11 +1,17 @@
 
-import { TrendingUp, DollarSign, UserCircle } from "lucide-react";
+import { TrendingUp, DollarSign, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/App";
 
 const Header = () => {
   const isMobile = useIsMobile();
+  const { logout } = useAuth();
+  
+  const handleLogout = () => {
+    logout();
+  };
   
   return (
     <header className="bg-secondary/90 border-b border-white/5 backdrop-blur-md text-foreground py-4 px-6 shadow-md sticky top-0 z-10">
@@ -31,12 +37,12 @@ const Header = () => {
             variant="outline" 
             size="sm" 
             className="rounded-full font-medium text-foreground border-primary/50 hover:bg-primary/20 hover:text-primary"
-            asChild
+            onClick={handleLogout}
           >
-            <Link to="/" className="flex items-center gap-1.5">
-              <UserCircle className="w-4 h-4" />
-              {isMobile ? "Login" : "Login / Cadastro"}
-            </Link>
+            <div className="flex items-center gap-1.5">
+              <LogOut className="w-4 h-4" />
+              {isMobile ? "Sair" : "Encerrar sessão"}
+            </div>
           </Button>
         </div>
       </div>
