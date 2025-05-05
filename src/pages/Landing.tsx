@@ -16,6 +16,7 @@ const Landing = () => {
   // If already authenticated, redirect to dashboard
   if (isAuthenticated) {
     navigate("/dashboard");
+    return null; // Added return statement to prevent rendering the rest when redirecting
   }
 
   return (
@@ -72,7 +73,7 @@ const Landing = () => {
                 className="rounded-full px-6 group"
                 size="lg"
               >
-                Criar conta gratuita
+                Começar agora
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </div>
