@@ -1,13 +1,14 @@
 
-import { TrendingUp, DollarSign, LogOut } from "lucide-react";
+import { TrendingUp, DollarSign, LogOut, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/App";
 
 const Header = () => {
   const isMobile = useIsMobile();
   const { logout } = useAuth();
+  const navigate = useNavigate();
   
   const handleLogout = () => {
     logout();
@@ -33,6 +34,19 @@ const Header = () => {
               Analisando ações do IDIV pelo método Graham
             </span>
           )}
+          
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="rounded-full font-medium text-foreground border-primary/50 hover:bg-primary/20 hover:text-primary"
+            onClick={() => navigate("/plans")}
+          >
+            <div className="flex items-center gap-1.5">
+              <CreditCard className="w-4 h-4" />
+              {isMobile ? "Planos" : "Assinar plano"}
+            </div>
+          </Button>
+          
           <Button 
             variant="outline" 
             size="sm" 

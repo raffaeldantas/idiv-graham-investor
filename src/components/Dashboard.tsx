@@ -5,12 +5,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import StockTable from "./StockTable";
 import StockList from "./StockList";
-import { Info, TrendingUp, LineChart } from "lucide-react";
+import { Info, TrendingUp, LineChart, CreditCard } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const [view, setView] = useState<"table" | "cards">("table");
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
 
   // Auto-switch to cards view on mobile
   useState(() => {
@@ -21,14 +24,23 @@ const Dashboard = () => {
 
   return (
     <div className="container mx-auto py-6 px-4">
-      <div className="mb-8">
-        <h2 className="text-3xl font-bold mb-2 flex items-center gap-2">
-          <LineChart className="w-6 h-6 text-primary" />
-          Análise Graham - Ações IDIV
-        </h2>
-        <p className="text-muted-foreground">
-          Descubra ações potencialmente subavaliadas usando a metodologia de Benjamin Graham
-        </p>
+      <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+          <h2 className="text-3xl font-bold mb-2 flex items-center gap-2">
+            <LineChart className="w-6 h-6 text-primary" />
+            Análise Graham - Ações IDIV
+          </h2>
+          <p className="text-muted-foreground">
+            Descubra ações potencialmente subavaliadas usando a metodologia de Benjamin Graham
+          </p>
+        </div>
+        <Button
+          onClick={() => navigate("/plans")}
+          variant="outline"
+          className="border-primary/30 bg-primary/10 hover:bg-primary/20 self-start md:self-auto"
+        >
+          <CreditCard className="mr-2 h-4 w-4" /> Assinar plano premium
+        </Button>
       </div>
 
       <Card className="mb-6 finance-card">
