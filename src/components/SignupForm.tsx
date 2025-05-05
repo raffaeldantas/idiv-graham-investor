@@ -55,7 +55,9 @@ const SignupForm = () => {
       
       // Set authenticated state to true
       login();
-      navigate("/dashboard");
+      
+      // Redirect to plans page instead of dashboard
+      navigate("/plans");
     } catch (error) {
       toast({
         title: "Erro no cadastro",
